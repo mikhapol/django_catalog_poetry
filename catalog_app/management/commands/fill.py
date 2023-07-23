@@ -25,17 +25,7 @@ class Command(BaseCommand):
             )
 
         Category.objects.bulk_create(category_for_create)
-        #
-        # products = [
-        #     {'name': 'Абрикос', 'desc': 'Жёлтый', 'category': category_for_create[0], 'price': '123'},
-        #     {'name': 'Вишня', 'desc': 'Красная', 'category': category_for_create[2], 'price': '456'},
-        #     {'name': 'Салат', 'desc': 'Китайский', 'category': category_for_create[1], 'price': '789'},
-        #     {'name': 'Огурец', 'desc': 'Длинный', 'category': category_for_create[1], 'price': '987'},
-        #     {'name': 'Помидор', 'desc': 'Бычье сердце', 'category': category_for_create[1], 'price': '654'},
-        #     {'name': 'Арбуз', 'desc': 'Без косточек', 'category': category_for_create[2], 'price': '321'},
-        #     {'name': 'Изюм', 'desc': 'Обыкновенный', 'category': category_for_create[3], 'price': '147'},
-        #     {'name': 'Корнишон', 'desc': 'В банках', 'category': category_for_create[4], 'price': '258'},
-        # ]
+
 
         products = [
             {'name': 'Абрикос', 'desc': 'Жёлтый', 'category_id': 1, 'price': '123'},
@@ -55,3 +45,5 @@ class Command(BaseCommand):
             )
 
         Product.objects.bulk_create(products_for_create)
+
+
