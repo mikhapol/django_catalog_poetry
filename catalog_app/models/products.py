@@ -12,7 +12,7 @@ NOT_NULLABLE = {
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Имя', **NOT_NULLABLE)
+    name = models.CharField(max_length=50, verbose_name='Продукт', **NOT_NULLABLE)
     desc = models.TextField(verbose_name='Описание', **NULLABlE)
     image = models.ImageField(upload_to='products/', verbose_name="Картинка", **NULLABlE)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name="Категория")

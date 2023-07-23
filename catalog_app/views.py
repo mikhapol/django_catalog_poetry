@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
 from catalog_app.models import Product, Category
 
@@ -8,13 +8,20 @@ from catalog_app.models import Product, Category
 # Create your views here.
 
 
-def home(request):
-    product_list = Product.objects.all()
-    context = {
-        'object_list': product_list,
+# def home(request):
+#     product_list = Product.objects.all()
+#     context = {
+#         'object_list': product_list,
+#         'title': 'Продукты'
+#     }
+#     return render(request, 'catalog_app/product_list.html', context)
+
+
+class ProductListView(ListView):
+    model = Product
+    extra_context = {
         'title': 'Продукты'
     }
-    return render(request, 'catalog_app/index.html', context)
 
 
 class CategoryListView(ListView):
@@ -32,22 +39,22 @@ class CategoryListView(ListView):
 #
 #     return render(request, 'catalog_app/product_form.html', context)
 
-class ProductListView(ListView):
-    model = Product
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(category_id=self.kwargs.get('pk'))
-        return queryset
-
-    def get_context_data(self, *args, **kwargs):
-        contex_data = super().get_context_data(*args, **kwargs)
-
-        category_item = Category.objects.get(pk=self.kwargs.get('pk'))
-        contex_data['category_pk'] = category_item.pk
-        contex_data['title'] = f'Продукты категории - все наши категории {category_item.name}'
-
-        return contex_data
+# class ProductListView(ListView):
+#     model = Product
+#
+#     def get_queryset(self):
+#         queryset = super().get_queryset()
+#         queryset = queryset.filter(category_id=self.kwargs.get('pk'))
+#         return queryset
+#
+#     def get_context_data(self, *args, **kwargs):
+#         contex_data = super().get_context_data(*args, **kwargs)
+#
+#         category_item = Category.objects.get(pk=self.kwargs.get('pk'))
+#         contex_data['category_pk'] = category_item.pk
+#         contex_data['title'] = f'Продукты категории - все наши категории {category_item.name}'
+#
+#         return contex_data
 
 
 def contacts(request):
@@ -68,3 +75,32 @@ class ProductCreateView(CreateView):
     model = Product
     fields = ('name', 'desc', 'price', 'category', 'image')
     success_url = reverse_lazy('catalog_app:index')
+
+    extra_context = {
+        'title': 'Добавление продукта'
+    }
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ('name', 'desc', 'price', 'category', 'image')
+    success_url = reverse_lazy('catalog_app:index')
+
+    extra_context = {
+        'title': 'Изменение'
+    }
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    extra_context = {
+        'title': f'Информация о продукте.'
+    }
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog_app:index')
+    extra_context = {
+        'title': f'Удаление'
+    }
