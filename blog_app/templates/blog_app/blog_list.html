@@ -16,7 +16,7 @@
                     <div class="card mb-4 box-shadow">
                         <div class="card-body">
                             <p class="card-text">
-                                {% if object.is_active %}
+                                {% if object.published %}
                                     {{ object|title }}
                                 {% else %}
                                     <span class="text-muted">{{ object|title }}</span>
@@ -32,7 +32,7 @@
                                        class="btn btn-sm btn-outline-danger">Удаление</a>
                                 </div>
                             </div>
-                            {% if object.is_active %}
+                            {% if object.published %}
                                 <a class="btn btn-warning"
                                    href="{% url 'blog_app:activity' object.pk %}">Деактивировать</a>
                             {% else %}

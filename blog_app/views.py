@@ -63,10 +63,10 @@ class BlogDeleteView(DeleteView):
 
 def toggle_activity(request, pk):
     blog_item = get_object_or_404(Blog, pk=pk)
-    if blog_item.is_active:
-        blog_item.is_active = False
+    if blog_item.published:
+        blog_item.published = False
     else:
-        blog_item.is_active = True
+        blog_item.published = True
 
     blog_item.save()
 
