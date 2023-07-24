@@ -31,30 +31,31 @@ class CategoryListView(ListView):
     }
 
 
-# def product(request, pk):
-#     context = {
-#         'object_list': Product.objects.filter(pk=pk),
-#         'title': 'Продукт'
-#     }
-#
-#     return render(request, 'catalog_app/product_form.html', context)
+class VegetablesListView(ListView):
+    model = Product
 
-# class ProductListView(ListView):
-#     model = Product
-#
-#     def get_queryset(self):
-#         queryset = super().get_queryset()
-#         queryset = queryset.filter(category_id=self.kwargs.get('pk'))
-#         return queryset
-#
-#     def get_context_data(self, *args, **kwargs):
-#         contex_data = super().get_context_data(*args, **kwargs)
-#
-#         category_item = Category.objects.get(pk=self.kwargs.get('pk'))
-#         contex_data['category_pk'] = category_item.pk
-#         contex_data['title'] = f'Продукты категории - все наши категории {category_item.name}'
-#
-#         return contex_data
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(category_id=self.kwargs.get('pk'))
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        contex_data = super().get_context_data(*args, **kwargs)
+
+        category_item = Product.objects.get(pk=self.kwargs.get('pk'))
+        contex_data['category_id'] = category_item.pk
+        contex_data['name'] = f'Продукты категории - все наши категории {category_item.name}'
+
+        return contex_data
+
+def vegetables(request, pk):
+    category_items = Category.objects.get(pk=pk)
+    context = {
+        'object_list': Product.objects.filter(category_id=pk),
+        'title': f'Продукты {category_items.name}.'
+    }
+
+    return render(request, 'catalog_app/vegetables_list.html', context)
 
 
 def contacts(request):
@@ -69,6 +70,10 @@ def contacts(request):
         print(f'{name} ({phone}): {message}')
 
     return render(request, 'catalog_app/contacts.html', context)
+
+
+def admin():
+    pass
 
 
 class ProductCreateView(CreateView):
