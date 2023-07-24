@@ -40,6 +40,10 @@ class BlogDetailView(DetailView):
         self.object.save()
         return self.object
 
+    extra_context = {
+        'title': 'Подробности блога'
+    }
+
 
 class BlogUpdateView(UpdateView):
     model = Blog
@@ -48,7 +52,7 @@ class BlogUpdateView(UpdateView):
     def form_valid(self, form):
         if form.is_valid():
             new_form = form.save()
-            new_form.slug = slugify(new_form.title)
+            new_form.slug = slugify(new_form.name_blog)
             new_form.save()
         return super().form_valid(form)
 
