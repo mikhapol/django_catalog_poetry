@@ -48,6 +48,7 @@ class VegetablesListView(ListView):
 
         return contex_data
 
+
 def vegetables(request, pk):
     category_items = Category.objects.get(pk=pk)
     context = {
