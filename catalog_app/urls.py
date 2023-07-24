@@ -16,7 +16,7 @@ urlpatterns = [
     path('catalog_app/delete/<int:pk>/', ProductDeleteView.as_view(), name='delete_product'),
 
     # path('/catalog_app/<int:pk>/vegetables/', VegetablesListView.as_view(), name='vegetables'),
-    path('/catalog_app/<int:pk>/vegetables/', vegetables, name='vegetables'),
+    path('catalog_app/<int:pk>/vegetables/', vegetables, name='vegetables'),
 
     path('contacts/', contacts, name='contacts'),
     path('admin/', admin, name='admin'),
