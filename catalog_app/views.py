@@ -21,30 +21,20 @@ class CategoryListView(ListView):
 
 class VegetablesListView(ListView):
     model = Product
-    extra_context = {
-        'title': f'Категория продуктов: '
-    }
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        category_item = Category.objects.get(pk=self.kwargs.get('pk'))
-        if category_item:
-            queryset = queryset.filter(category_id=category_item)
+        queryset = queryset.filter(category_id=self.kwargs.get('pk'))
         return queryset
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     queryset = queryset.filter(category_id=self.kwargs.get('pk'))
-    #     return queryset
-    #
-    # def get_context_data(self, *args, **kwargs):
-    #     contex_data = super().get_context_data(*args, **kwargs)
-    #
-    #     category_item = Category.objects.get(pk=self.kwargs.get('pk'))
-    #     contex_data['category_id'] = category_item.pk
-    #     contex_data['name'] = f'Продукты категории - все наши категории {category_item.name}'
-    #
-    #     return contex_data
+    def get_context_data(self, *args, **kwargs):
+        contex_data = super().get_context_data(*args, **kwargs)
+
+        category_item = Category.objects.get(pk=self.kwargs.get('pk'))
+        contex_data['category_id'] = category_item.pk,
+        contex_data['title'] = f'Все продукты категории {category_item.name}'
+
+        return contex_data
 
 
 # def vegetables(request, pk):
