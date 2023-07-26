@@ -5,9 +5,6 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, D
 from catalog_app.models import Product, Category
 
 
-# Create your views here.
-
-
 class ProductListView(ListView):
     model = Product
     extra_context = {
