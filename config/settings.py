@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     'catalog_app.apps.CatalogAppConfig',
     'blog_app.apps.BlogAppConfig',
+    'order_app.apps.OrderAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_HOST = get_env_value('EMAIL_HOST')
+EMAIL_PORT = get_env_value('EMAIL_PORT')
+EMAIL_HOST_USER = get_env_value('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_env_value('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = get_env_value('EMAIL_USE_SSL')
