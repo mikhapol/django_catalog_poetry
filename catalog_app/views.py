@@ -80,10 +80,6 @@ class ContactTemplateView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-def admin():
-    pass
-
-
 class ProductCreateView(CreateView):
     model = Product
     fields = ('name', 'desc', 'price', 'category', 'image')

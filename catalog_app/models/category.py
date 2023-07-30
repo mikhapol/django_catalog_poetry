@@ -1,14 +1,7 @@
 from django.db import models
 
-NULLABlE = {
-    'blank': True,
-    'null': True
-}
-
-NOT_NULLABLE = {
-    'blank': False,
-    'null': False
-}
+NULLABlE = {'blank': True, 'null': True}
+NOT_NULLABLE = {'blank': False, 'null': False}
 
 
 class Category(models.Model):
@@ -22,4 +15,3 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
         ordering = ('name',)
-
