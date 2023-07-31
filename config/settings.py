@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 
     'catalog_app.apps.CatalogAppConfig',
     'blog_app.apps.BlogAppConfig',
-    'order_app.apps.OrderAppConfig',
+    'mailing_app.apps.MailingAppConfig',
 ]
 
 MIDDLEWARE = [
