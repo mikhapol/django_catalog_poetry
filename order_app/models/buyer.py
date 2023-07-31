@@ -1,16 +1,17 @@
 from django.db import models
 
-NULLABlE = {'blank': True, 'null': True}
+NULLABLE = {'blank': True, 'null': True}
 NOT_NULLABLE = {'blank': False, 'null': False}
 
 
 class Buyer(models.Model):
-    name = models.CharField(max_length=150, verbose_name='имя')
-    email = models.EmailField(verbose_name='почта', unique=True)
+    email = models.EmailField(verbose_name='Email', unique=True)
+    fullname = models.CharField(max_length=100, verbose_name='ФИО')
+    comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
 
     def __str__(self):
-        return f'{self.email} ({self.name})'
+        return f"{self.fullname} ({self.email})"
 
     class Meta:
-        verbose_name = 'Покупатель'
-        verbose_name_plural = 'Покупатели'
+        verbose_name = 'Клиент'
+        verbose_name_plural = 'Клиенты'

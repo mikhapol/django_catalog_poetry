@@ -1,13 +1,13 @@
 from django.db import models
 
-NULLABlE = {'blank': True, 'null': True}
+NULLABLE = {'blank': True, 'null': True}
 NOT_NULLABLE = {'blank': False, 'null': False}
 
 
 class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name='Продукт', **NOT_NULLABLE)
-    desc = models.TextField(verbose_name='Описание', **NULLABlE)
-    image = models.ImageField(upload_to='products/', verbose_name="Картинка", **NULLABlE)
+    desc = models.TextField(verbose_name='Описание', **NULLABLE)
+    image = models.ImageField(upload_to='products/', verbose_name="Картинка", **NULLABLE)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name="Категория")
     price = models.PositiveIntegerField(default=0, verbose_name="Цена", **NOT_NULLABLE)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания", **NOT_NULLABLE)

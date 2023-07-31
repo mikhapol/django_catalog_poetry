@@ -1,17 +1,16 @@
 from django.db import models
 
-NULLABlE = {'blank': True, 'null': True}
+NULLABLE = {'blank': True, 'null': True}
 NOT_NULLABLE = {'blank': False, 'null': False}
 
 
 class MailingMessage(models.Model):
-    pass
+    letter_subject = models.CharField(max_length=100, verbose_name='тема письма')
+    letter_body = models.TextField(verbose_name='тело письма', **NULLABLE)
 
     def __str__(self):
-        pass
+        return f"Настройки письма - {self.letter_subject}"
 
     class Meta:
-        verbose_name = 'Рассылка'
-        verbose_name_plural = 'Рассылки'
-
-
+        verbose_name = 'сообщение'
+        verbose_name_plural = 'сообщения'
