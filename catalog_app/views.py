@@ -40,30 +40,6 @@ class VegetablesListView(ListView):
         return contex_data
 
 
-# def vegetables(request, pk):
-#     category_items = Category.objects.get(pk=pk)
-#     context = {
-#         'object_list': Product.objects.filter(category_id=pk),
-#         'title': f'Продукты {category_items.name}.'
-#     }
-#
-#     return render(request, 'catalog_app/vegetables_list.html', context)
-
-
-# def contacts(request):
-#     context = {
-#         'title': 'Контакты'
-#     }
-#
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         phone = request.POST.get('phone')
-#         message = request.POST.get('message')
-#         print(f'{name} ({phone}): {message}')
-#
-#     return render(request, 'catalog_app/contacts.html', context)
-
-
 class ContactTemplateView(TemplateView):
     template_name = 'catalog_app/contacts.html'
     extra_context = {
