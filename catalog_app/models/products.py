@@ -13,6 +13,8 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания", **NOT_NULLABLE)
     update_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления", **NOT_NULLABLE)
 
+    owner = models.ForeignKey('Owner', on_delete=models.CASCADE, verbose_name='владелец', **NULLABLE)
+
     def __str__(self):
         return f'Наименование - {self.name}, описание: {self.desc}, категория: {self.category}, цена - {self.price}.'
 

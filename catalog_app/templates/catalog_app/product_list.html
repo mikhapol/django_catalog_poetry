@@ -38,9 +38,30 @@
                                 <a href="{% url 'catalog_app:delete_product' object.pk %}" type="button"
                                    class="btn btn-sm btn-outline-danger">Удал.</a>
                             </div>
-
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="card-footer">
+                                <td>Поставщик:</td>
+                                <div class="btn-group">
+                                    <a href="{% url 'catalog_app:create_provider' object.pk %}" type="button"
+                                       class="btn btn-sm btn-outline-secondary">Доб.</a>
+                                    <a href="{% url 'catalog_app:update_provider' object.pk %}" type="button"
+                                       class="btn btn-sm btn-outline-secondary">Изм.</a>
+                                </div>
+                            </div>
 
                         </div>
+                        <div class="card-footer">
+                            <a href="{% url 'order_app:order_create' object.pk %}" class="btn btn-outline-success">Оставить
+                                заявку</a>
+                        </div>
+                        {% for version_item in object.version_set.all %}
+                            {% if version_item.is_actual %}
+                                <div class="col" align="center" style="margin-top:5px">
+                                    <p>Актуальная версия: {{ version_item.version_name }}</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

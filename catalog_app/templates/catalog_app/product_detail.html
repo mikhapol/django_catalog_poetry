@@ -27,12 +27,16 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="card-footer"></div>
+                        <div class="card-footer">
+                            <a href="{% url 'order_app:order_create' object.pk %}" class="btn btn-outline-success">Оставить
+                                заявку</a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <img src="/media/{{ object.image }}" style="height: 300px"/></img>
                 </div>
+
             </div>
         </div>
 
