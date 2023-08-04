@@ -3,10 +3,8 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
 
+from blog_app.forms import BlogForm
 from blog_app.models import Blog
-
-
-# Create your views here.
 
 
 class BlogListView(ListView):
@@ -16,6 +14,10 @@ class BlogListView(ListView):
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(published=True)
         return queryset
+
+    extra_context = {
+        'title': 'Блоги'
+    }
 
 
 class BlogCreateView(CreateView):
@@ -47,7 +49,7 @@ class BlogDetailView(DetailView):
 
 class BlogUpdateView(UpdateView):
     model = Blog
-    fields = ('name_blog', 'body', 'image', 'published')
+    form_class = BlogForm
 
     def form_valid(self, form):
         if form.is_valid():
