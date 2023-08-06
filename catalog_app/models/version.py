@@ -1,8 +1,5 @@
 from django.db import models
 
-NULLABLE = {'blank': True, 'null': True}
-NOT_NULLABLE = {'blank': False, 'null': False}
-
 
 class Version(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Продукт')
