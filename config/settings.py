@@ -15,6 +15,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
 
+import users_app.apps
+
 load_dotenv()
 
 
@@ -55,6 +57,7 @@ INSTALLED_APPS = [
     'blog_app.apps.BlogAppConfig',
     'mailing_app.apps.MailingAppConfig',
     'order_app.apps.OrderAppConfig',
+    'users_app.apps.UsersAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -156,4 +159,9 @@ EMAIL_PORT = get_env_value('EMAIL_PORT')
 EMAIL_HOST_USER = get_env_value('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = get_env_value('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = get_env_value('EMAIL_USE_SSL')
-EMAIL_USE_TLS = get_env_value('EMAIL_USE_TLS')
+# EMAIL_USE_TLS = get_env_value('EMAIL_USE_TLS')
+
+AUTH_USER_MODEL = 'users_app.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
