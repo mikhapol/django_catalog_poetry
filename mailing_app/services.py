@@ -10,15 +10,15 @@ def send_email(message_settings, message_buyer):
         message=message_settings.message.message,
         from_email=settings.EMAIL_HOST_USER,
         # recipient_list=[message_buyer.buyer.email],
-        recipient_list = ['mikhapol@bk.ru', 'polyakovmm@yandex.ru'],
+        recipient_list=['mikhapol@gmail.com', 'mikhapol@icloud.com'],
         fail_silently=False,
     )
 
     MailingLog.objects.create(
         status=MailingLog.STATUS_OK if result else MailingLog.STATUS_FAILED,
         settings=message_settings,
-        buyer=message_buyer
-        # buyer_id = message_client.buyer_id
+        # buyer=message_buyer,
+        buyer_id=message_buyer.buyer_id
     )
 
 
