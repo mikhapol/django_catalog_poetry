@@ -100,16 +100,29 @@ class ProfileUpdateView(UpdateView):
 
 def generate_new_password(request):
     # new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
+
+    # new_password = User.objects.make_random_password(length=12)
+    # send_mail(
+    #     subject='Вы сменили пароль',
+    #     message=f'Ваш новый пароль {new_password}',
+    #     from_email=settings.EMAIL_HOST_USER,
+    #     recipient_list=[request.user.email]
+    # )
+    # request.user.set_password(new_password)
+    # request.user.save()
+    # return redirect(reverse('catalog_app:index'))
+
     new_password = User.objects.make_random_password(length=12)
     send_mail(
-        subject='Вы сменили пароль',
-        message=f'Ваш новый пароль {new_password}',
+        subject='Восстановление пароля',
+        message=(f'Пользователь - {request.user.email}\n'
+                 f'Ваш новый пароль: {new_password}'),
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[request.user.email]
     )
     request.user.set_password(new_password)
     request.user.save()
-    return redirect(reverse('catalog_app:index'))
+    return redirect(reverse('users_app:login'))
 
 
 class CustomPasswordResetView(PasswordResetView):
