@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -14,7 +15,8 @@ from django.contrib.auth.views import LogoutView as BaseLogoutView
 
 from config import settings
 from users_app.email_verification_token_generator import email_verification_token
-from users_app.forms import UserRegisterForm, UserProfileForm, CustomPasswordResetForm, CustomResetConfirmForm
+from users_app.forms import UserRegisterForm, UserProfileForm, CustomPasswordResetForm, CustomResetConfirmForm, \
+    RecoverPasswordForm
 
 from users_app.models import User
 
@@ -97,6 +99,43 @@ class ProfileUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+def generate_old_password(user: User):
+    new_password = User.objects.make_random_password(length=12)
+    user.set_password(str(new_password))
+    user.save()
+
+    send_mail(
+        subject='Востановление пароля',
+        message=f'Ваш новый пароль: {new_password}',
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[user.email]
+    )
+
+
+def forget_password_view(request):
+    if request.method == 'POST':
+        recover_form = RecoverPasswordForm(request.POST)
+        if recover_form.is_valid():
+            email = recover_form.cleaned_data['email']
+            try:
+                user = User.objects.get(email=email)
+                generate_old_password(user)
+                return redirect('users_app:recover_password')
+            except ObjectDoesNotExist:
+                form = RecoverPasswordForm()
+                context = {'form': form,
+                           'user_does_not_exist': recover_form.cleaned_data['email']}
+                return render(request, 'users_app/random_password_form.html', context)
+    else:
+        form = RecoverPasswordForm()
+        context = {'form': form}
+        return render(request, 'users_app/random_password_form.html', context=context)
+
+
+def recover_password_view(request):
+    return render(request, 'users_app/recover_password.html')
 
 
 def generate_new_password(request):
