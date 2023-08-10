@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
@@ -14,9 +14,10 @@ class ProductListView(ListView):
     }
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog_app.add_product'
     success_url = reverse_lazy('catalog_app:index')
     login_url = 'users_app:login'
 
@@ -32,9 +33,10 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     }
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog_app.change_product'
     success_url = reverse_lazy('catalog_app:index')
     login_url = 'users_app:login'
 
@@ -68,10 +70,14 @@ class ProductDetailView(DetailView):
     }
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog_app:index')
     login_url = 'users_app:login'
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
     extra_context = {
         'title': f'Удаление'
     }

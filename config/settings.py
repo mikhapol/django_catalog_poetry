@@ -164,4 +164,4 @@ EMAIL_USE_SSL = get_env_value('EMAIL_USE_SSL')
 AUTH_USER_MODEL = 'users_app.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
+LOGIN_URL = 'users_app:login'
