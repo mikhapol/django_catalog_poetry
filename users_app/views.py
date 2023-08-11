@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model, login
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
@@ -9,16 +8,15 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic import CreateView, UpdateView
-from django.contrib.auth.views import LoginView as BaseLoginView, PasswordResetView, PasswordResetConfirmView, \
-    PasswordResetDoneView, PasswordResetCompleteView
-from django.contrib.auth.views import LogoutView as BaseLogoutView
+from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as BaseLogoutView, PasswordResetView, \
+    PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 
 from config import settings
-from users_app.email_verification_token_generator import email_verification_token
-from users_app.forms import UserRegisterForm, UserProfileForm, CustomPasswordResetForm, CustomResetConfirmForm, \
-    RecoverPasswordForm
 
 from users_app.models import User
+from users_app.services import email_verification_token
+from users_app.forms import UserRegisterForm, UserProfileForm, CustomPasswordResetForm, CustomResetConfirmForm, \
+    RecoverPasswordForm
 
 
 class LoginView(BaseLoginView):
@@ -27,23 +25,6 @@ class LoginView(BaseLoginView):
 
 class LogoutView(BaseLogoutView):
     pass
-
-
-# class RegisterView(CreateView):
-#     model = User
-#     form_class = UserRegisterForm
-#     template_name = 'users_app/register.html'
-#     success_url = reverse_lazy('users_app:login')
-#
-#     def form_valid(self, form):
-#         new_user = form.save()
-#         send_mail(
-#             subject='Поздравляем с регистрацией',
-#             message='Вы зарегистрировались на нашей платформе, добро пожаловать!',
-#             from_email=settings.EMAIL_HOST_USER,
-#             recipient_list=[new_user.email]
-#         )
-#         return super().form_valid(form)
 
 
 class RegisterView(CreateView):
@@ -58,7 +39,10 @@ class RegisterView(CreateView):
 
         send_mail(
             subject=subject,
-            message=f'Активируйте ваш профиль: http://{current_site.domain}/users_app/activate/{urlsafe_base64_encode(force_bytes(new_user.pk))}/{email_verification_token.make_token(new_user)}',
+            message=f'Активируйте ваш профиль: '
+                    f'http://{current_site.domain}/users_app/activate/'
+                    f'{urlsafe_base64_encode(force_bytes(new_user.pk))}/'
+                    f'{email_verification_token.make_token(new_user)}',
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[new_user.email]
         )
@@ -101,13 +85,32 @@ class ProfileUpdateView(UpdateView):
         return self.request.user
 
 
+def recover_password_view(request):
+    return render(request, 'users_app/recover_password.html')
+
+
+def generate_new_password(request):
+    # new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)]) # Только цифры
+    new_password = User.objects.make_random_password(length=12)
+    send_mail(
+        subject='Восстановление пароля методом рандом.',
+        message=(f'Пользователь - {request.user.email}.\n'
+                 f'Ваш новый пароль: > {new_password} <'),
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[request.user.email]
+    )
+    request.user.set_password(new_password)
+    request.user.save()
+    return redirect(reverse('users_app:login'))
+
+
 def generate_old_password(user: User):
     new_password = User.objects.make_random_password(length=12)
     user.set_password(str(new_password))
     user.save()
 
     send_mail(
-        subject='Востановление пароля',
+        subject='Восстановление пароля',
         message=f'Ваш новый пароль: {new_password}',
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[user.email]
@@ -134,37 +137,6 @@ def forget_password_view(request):
         return render(request, 'users_app/random_password_form.html', context=context)
 
 
-def recover_password_view(request):
-    return render(request, 'users_app/recover_password.html')
-
-
-def generate_new_password(request):
-    # new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
-
-    # new_password = User.objects.make_random_password(length=12)
-    # send_mail(
-    #     subject='Вы сменили пароль',
-    #     message=f'Ваш новый пароль {new_password}',
-    #     from_email=settings.EMAIL_HOST_USER,
-    #     recipient_list=[request.user.email]
-    # )
-    # request.user.set_password(new_password)
-    # request.user.save()
-    # return redirect(reverse('catalog_app:index'))
-
-    new_password = User.objects.make_random_password(length=12)
-    send_mail(
-        subject='Восстановление пароля',
-        message=(f'Пользователь - {request.user.email}\n'
-                 f'Ваш новый пароль: {new_password}'),
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[request.user.email]
-    )
-    request.user.set_password(new_password)
-    request.user.save()
-    return redirect(reverse('users_app:login'))
-
-
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'users_app/password_reset_form.html'
     form_class = CustomPasswordResetForm
@@ -183,8 +155,8 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         if form.is_valid():
             self.object = form.save()
             send_mail(
-                subject='Изменения пароля',
-                message=f'Вы поменяли пароль от своего профиля',
+                subject='Изменения пароля.',
+                message=f'Вы поменяли пароль от своего профиля {self.object.email}.',
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[self.object.email]
             )
