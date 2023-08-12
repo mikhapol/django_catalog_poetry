@@ -14,7 +14,7 @@ from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as 
 from config import settings
 
 from users_app.models import User
-from users_app.services import email_verification_token
+from users_app.services import email_verification_token, send_generate_old_password, send_generate_new_password
 from users_app.forms import UserRegisterForm, UserProfileForm, CustomPasswordResetForm, CustomResetConfirmForm, \
     RecoverPasswordForm
 
@@ -89,32 +89,28 @@ def recover_password_view(request):
     return render(request, 'users_app/recover_password.html')
 
 
-def generate_new_password(request):
+def generate_old_password(request):
     # new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)]) # Только цифры
     new_password = User.objects.make_random_password(length=12)
-    send_mail(
-        subject='Восстановление пароля методом рандом.',
-        message=(f'Пользователь - {request.user.email}.\n'
-                 f'Ваш новый пароль: > {new_password} <'),
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[request.user.email]
-    )
+    # send_mail(
+    #     subject='Восстановление пароля методом рандом.',
+    #     message=(f'Пользователь - {request.user.email}.\n'
+    #              f'Ваш новый пароль: > {new_password} <'),
+    #     from_email=settings.EMAIL_HOST_USER,
+    #     recipient_list=[request.user.email]
+    # )
+
     request.user.set_password(new_password)
     request.user.save()
+    send_generate_old_password(request.user.email, new_password)
     return redirect(reverse('users_app:login'))
 
 
-def generate_old_password(user: User):
+def generate_new_password(user: User):
     new_password = User.objects.make_random_password(length=12)
     user.set_password(str(new_password))
     user.save()
-
-    send_mail(
-        subject='Восстановление пароля',
-        message=f'Ваш новый пароль: {new_password}',
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[user.email]
-    )
+    send_generate_new_password(user.email, new_password)
 
 
 def forget_password_view(request):
@@ -124,7 +120,7 @@ def forget_password_view(request):
             email = recover_form.cleaned_data['email']
             try:
                 user = User.objects.get(email=email)
-                generate_old_password(user)
+                generate_new_password(user)
                 return redirect('users_app:recover_password')
             except ObjectDoesNotExist:
                 form = RecoverPasswordForm()
