@@ -1,19 +1,11 @@
 from django.db import models
 
-NULLABlE = {
-    'blank': True,
-    'null': True
-}
-
-NOT_NULLABLE = {
-    'blank': False,
-    'null': False
-}
+from catalog_app.models.products import NOT_NULLABLE, NULLABLE
 
 
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name='Наименование', **NOT_NULLABLE)
-    desc = models.TextField(verbose_name='Описание', **NULLABlE)
+    desc = models.TextField(verbose_name='Описание', **NULLABLE)
 
     def __str__(self):
         return f'{self.name}'
@@ -22,4 +14,3 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
         ordering = ('name',)
-

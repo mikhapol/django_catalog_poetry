@@ -15,18 +15,18 @@ from pathlib import Path
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
 
-load_dotenv()
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+dot_env = os.path.join(BASE_DIR / '.env', )
+load_dotenv(dotenv_path=dot_env)
 
 
 def get_env_value(env_var):
     try:
         return os.environ[env_var]
     except KeyError:
-        error_msg = f'Set the {env_var} env variable in .env file'
+        error_msg = f'Установите переменную {env_var} env в файле ".env".'
         raise ImproperlyConfigured(error_msg)
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,7 +40,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -52,9 +51,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'catalog_app.apps.CatalogAppConfig',
+    'blog_app.apps.BlogAppConfig',
+    'mailing_app.apps.MailingAppConfig',
+    'order_app.apps.OrderAppConfig',
+    'users_app.apps.UsersAppConfig',
 ]
 
 MIDDLEWARE = [
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -84,7 +89,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -98,7 +102,6 @@ DATABASES = {
         'PORT': get_env_value('POSTGRES_PORT')
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -118,7 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -129,7 +131,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -147,3 +148,26 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_HOST = get_env_value('EMAIL_HOST')
+EMAIL_PORT = get_env_value('EMAIL_PORT')
+EMAIL_HOST_USER = get_env_value('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_env_value('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = get_env_value('EMAIL_USE_SSL')
+# EMAIL_USE_TLS = get_env_value('EMAIL_USE_TLS')
+
+AUTH_USER_MODEL = 'users_app.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'users_app:login'
+
+CACHE_ENABLED = get_env_value('CACHE_ENABLED') == 'True'
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": get_env_value('CACHES_LOCATION'),
+            "TIMEOUT": get_env_value('CACHES_TIMEOUT')
+        }
+    }
