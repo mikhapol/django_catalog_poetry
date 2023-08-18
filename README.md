@@ -1,19 +1,17 @@
-# django_catalog_poetry
+# Джанго проект с poetry.
+>Изучение  джанго на примере продуктов. Есть реализация на тему Блогинга. 
+## в разработке
 
-Виртуальное окружение poetry
+> Виртуальное окружение poetry
 
-Установлены следующие зависимости:
-python = "^3.11"
-django = "^4.2.3"
-psycopg2-binary = "^2.9.6"
-pillow = "^10.0.0"
-ipython = "^8.14.0"
-python-dotenv = "^1.0.0"
+### Установлены следующие зависимости [pyproject.toml](pyproject.toml):
+- python = "^3.11"
+- django = "^4.2.3"
+- psycopg2-binary = "^2.9.6"
+- pillow = "^10.0.0"
+- ipython = "^8.14.0"
+- python-dotenv = "^1.0.0"
+- pytils = "^0.4.1"
+- redis = "^4.6.0"
 
-Необходимо создать файл в корневой папке .env в него можно передать следующие данные:
-SECRET_KEY=*** - свой ключи
-POSTGRES_HOST=localhost
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=*** свой пароль от postgres
-POSTGRES_PORT=5432
-
+### Информация о переменных окружения отображены в файле [.env.sample](.env.sample)

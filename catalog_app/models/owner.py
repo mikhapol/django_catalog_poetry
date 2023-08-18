@@ -1,9 +1,5 @@
 from django.db import models
 
-NULLABLE = {'blank': True, 'null': True}
-
-NOT_NULLABLE = {'blank': False, 'null': False}
-
 
 class Owner(models.Model):
     name = models.CharField(max_length=150, verbose_name='имя')
@@ -15,4 +11,3 @@ class Owner(models.Model):
     class Meta:
         verbose_name = 'Владелец'
         verbose_name_plural = 'Владельцы'
-

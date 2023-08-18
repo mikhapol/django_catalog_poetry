@@ -1,7 +1,6 @@
 from django.db import models
 
-NULLABLE = {'blank': True, 'null': True}
-NOT_NULLABLE = {'blank': False, 'null': False}
+from catalog_app.models.products import NULLABLE, NOT_NULLABLE
 
 
 class Blog(models.Model):

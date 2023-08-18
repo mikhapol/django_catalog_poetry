@@ -2,15 +2,18 @@
 
 {% load static %}
 {% load my_tags %}
+
 {% block content %}
+
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">{{ title }}</h1>
     <dev class="col-12 mb-5">
-        <a class="btn btn-outline-primary" href="{% url 'catalog_app:create_product' %}">Добавить продукт</a>
+        {% if perms.catalog_app.add_product %}
+            <a class="btn btn-outline-primary" href="{% url 'catalog_app:create_product' %}">Добавить продукт</a>
+        {% endif %}
     </dev>
 </div>
 <div class="container">
-
     <div class="row text-center">
         {% for object in object_list %}
         <div class="col-3">
@@ -31,36 +34,44 @@
                         <div class="btn-group">
                             <a href="{% url 'catalog_app:view_product' object.pk %}"
                                class="btn btn-sm btn-outline-secondary">Прос.</a>
-
-                            <a href="{% url 'catalog_app:update_product' object.pk %}" type="button"
-                               class="btn btn-sm btn-outline-secondary">Ред.</a>
-
+                            {% if perms.catalog_app.change_product %}
+                                <a href="{% url 'catalog_app:update_product' object.pk %}" type="button"
+                                   class="btn btn-sm btn-outline-secondary">Ред.</a>
+                            {% endif %}
+                            {% if user.is_superuser %}
                             <a href="{% url 'catalog_app:delete_product' object.pk %}" type="button"
                                class="btn btn-sm btn-outline-danger">Удал.</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="card-footer">
-                            Поставщик:
+                            Поставщик: {{ object.vender }}
                             <div class="btn-group">
-                                <a href="{% url 'catalog_app:create_provider' object.pk %}" type="button"
-                                   class="btn btn-sm btn-outline-secondary">Доб.</a>
-                                <a href="{% url 'catalog_app:update_provider' object.pk %}" type="button"
-                                   class="btn btn-sm btn-outline-secondary">Изм.</a>
+                                {% if perms.catalog_app.add_provider %}
+                                    <a href="{% url 'catalog_app:create_provider' object.pk %}" type="button"
+                                       class="btn btn-sm btn-outline-secondary">Доб.</a>
+                                {% endif %}
+                                {% if perms.catalog_app.change_provider %}
+                                    <a href="{% url 'catalog_app:update_provider' object.pk %}" type="button"
+                                       class="btn btn-sm btn-outline-secondary">Изм.</a>
+                                {% endif %}
                             </div>
                         </div>
 
                     </div>
                     <div class="card-footer">
+{#                        {% if perms.order_app.add_order %}#}
                         <a href="{% url 'order_app:order_create' object.pk %}" class="btn btn-outline-success">Оставить
                             заявку</a>
+{#                        {% endif %}#}
                         {% for version_item in object.version_set.all %}
-                        {% if version_item.is_actual %}
-                        <div class="card-footer">
-                            <p>Версия: {{ version_item.version_name }}.<br>
-                                Номер: {{ version_item.version_number }}.</p>
-                        </div>
-                        {% endif %}
+                            {% if version_item.is_actual %}
+                                <div class="card-footer">
+                                    <p>Версия: {{ version_item.version_name }}.<br>
+                                        Номер: {{ version_item.version_number }}.</p>
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -68,5 +79,4 @@
         </div>
         {% endfor %}
     </div>
-
-    {% endblock content %}
+{% endblock content %}

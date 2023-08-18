@@ -2,9 +2,6 @@ from django.db import models
 
 from catalog_app.models import Product
 
-NULLABLE = {'blank': True, 'null': True}
-NOT_NULLABLE = {'blank': False, 'null': False}
-
 
 class Provider(models.Model):
     title = models.CharField(max_length=150, verbose_name='наименование')
