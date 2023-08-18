@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model, login
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,8 +11,6 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as BaseLogoutView, PasswordResetView, \
     PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
-
-from config import settings
 
 from users_app.models import User
 from users_app.services import email_verification_token, send_generate_old_password, send_generate_new_password

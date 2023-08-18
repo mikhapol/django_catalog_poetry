@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.db import models
-from config import settings
 
 NULLABLE = {'blank': True, 'null': True}
 NOT_NULLABLE = {'blank': False, 'null': False}
