@@ -18,7 +18,7 @@ class MailingSettings(models.Model):
     STATUS_DONE = 'done'
     STATUSES = (
         (STATUS_CREATED, 'created'),
-        (STATUS_STARTED,'started'),
+        (STATUS_STARTED, 'started'),
         (STATUS_DONE, 'done'),
     )
 
@@ -29,13 +29,11 @@ class MailingSettings(models.Model):
     message = models.ForeignKey('MailingMessage', on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
 
     def __str__(self):
-        return (f"{self.time} / {self.period}")
+        return f"{self.time} / {self.period}"
 
     class Meta:
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
-
-
 
     # mailing_time = models.TimeField(verbose_name='время рассылки')
     #
@@ -53,4 +51,3 @@ class MailingSettings(models.Model):
     # buyer = models.ForeignKey('Buyer', on_delete=models.CASCADE, verbose_name='покупатель')
     # message = models.ForeignKey('MailingMessage', on_delete=models.CASCADE, verbose_name='сообщение')
     #
-

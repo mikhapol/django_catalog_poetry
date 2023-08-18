@@ -1,11 +1,8 @@
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
-from django.views.generic import (
-    ListView, CreateView, UpdateView, DeleteView
-)
+from django.urls import reverse
+from django.views.generic import ListView
 
-from mailing_app.forms import MailingSettingsForm, BuyerForm, MessageForm
-from mailing_app.models import MailingSettings, Buyer, MailingClient
+from mailing_app.models import Buyer, MailingClient
 
 
 class MailingClientListView(ListView):
@@ -14,7 +11,7 @@ class MailingClientListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
 
-        context_data['buyer'] = Buyer.objects.all()
+        context_data['buyers'] = Buyer.objects.all()
         context_data['mailing_pk'] = self.kwargs.get('pk')
 
         return context_data
@@ -34,4 +31,4 @@ def toggle_client(request, pk, client_pk):
             buyer_id=client_pk,
             settings_id=pk
         )
-    return redirect(reverse('', args=[pk]))
+    return redirect(reverse('mailing_app:buyers', args=[pk]))

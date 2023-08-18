@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'mailing_app.apps.MailingAppConfig',
     'order_app.apps.OrderAppConfig',
     'users_app.apps.UsersAppConfig',
+
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -155,6 +157,11 @@ EMAIL_HOST_USER = get_env_value('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = get_env_value('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = get_env_value('EMAIL_USE_SSL')
 # EMAIL_USE_TLS = get_env_value('EMAIL_USE_TLS')
+
+
+CRONJOBS = [
+    ('*/1 * * * *', 'mailing_app.services.send_mails')
+]
 
 AUTH_USER_MODEL = 'users_app.User'
 LOGIN_REDIRECT_URL = '/'

@@ -1,10 +1,10 @@
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, CreateView, UpdateView, DeleteView
 )
 
-from mailing_app.forms import MailingSettingsForm, BuyerForm, MessageForm
-from mailing_app.models import MailingSettings, Buyer, MailingClient, MailingMessage
+from mailing_app.forms import MessageForm
+from mailing_app.models import MailingMessage
 
 
 class MessageListView(ListView):
