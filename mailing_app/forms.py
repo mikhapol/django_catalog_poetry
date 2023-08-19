@@ -6,7 +6,7 @@ from mailing_app.models import MailingSettings, Buyer, MailingMessage
 class MailingSettingsForm(forms.ModelForm):
     class Meta:
         model = MailingSettings
-        fields = ('status', 'period', 'time',)
+        fields = ('start_time', 'end_time', 'status', 'period', 'message')
 
 
 class BuyerForm(forms.ModelForm):

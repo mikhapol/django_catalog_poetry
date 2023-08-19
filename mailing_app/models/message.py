@@ -8,7 +8,7 @@ class MailingMessage(models.Model):
     letter_body = models.TextField(verbose_name='тело письма', **NULLABLE)
 
     def __str__(self):
-        return f"Настройки письма - {self.letter_subject}"
+        return f"{self.letter_subject}"
 
     class Meta:
         verbose_name = 'Письма'

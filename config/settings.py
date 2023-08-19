@@ -158,9 +158,8 @@ EMAIL_HOST_PASSWORD = get_env_value('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = get_env_value('EMAIL_USE_SSL')
 # EMAIL_USE_TLS = get_env_value('EMAIL_USE_TLS')
 
-
 CRONJOBS = [
-    ('*/1 * * * *', 'mailing_app.services.send_mails')
+    ('*/2 * * * *', 'mailing_app.services.send_mails')
 ]
 
 AUTH_USER_MODEL = 'users_app.User'

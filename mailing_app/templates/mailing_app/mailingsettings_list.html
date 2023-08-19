@@ -18,8 +18,12 @@
                             <div class="card-body">
                                 <table class="table">
                                     <tr>
-                                        <td>Время</td>
-                                        <td>{{ item.time|date:"H:i" }}</td>
+                                        <td>Время начало</td>
+                                        <td>{{ item.start_time|date:"d-m-Y H:i" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Время окончания</td>
+                                        <td>{{ item.end_time|date:"d-m-Y H:i" }}</td>
                                     </tr>
                                     <tr>
                                         <td>Период</td>
@@ -36,9 +40,9 @@
                                 </table>
                             </div>
                             <div class="card-footer">
-                                < href="{% url 'mailing_app:mailing_update' item.pk %}" class
-                                < href="{% url 'mailing_app:mailing_buyers' item.pk %}" class
-                                < href="{% url 'mailing_app:mailing_delete' item.pk %}" class
+                                <a href="{% url 'mailing_app:mailing_update' item.pk %}" class="btn btn-primary float-end">Редактирование</a>
+                                <a href="{% url 'mailing_app:mailing_buyer' item.pk %}" class="btn btn-primary float-end">Клиенты рассылки</a>
+                                <a href="{% url 'mailing_app:mailing_delete' item.pk %}" class="btn btn-primary float-end">Удаление</a>
                             </div>
                         </div>
                     </div>

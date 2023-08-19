@@ -16,19 +16,24 @@ class MailingClientListView(ListView):
 
         return context_data
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(settings=self.kwargs.get('pk'))
+        return queryset
 
-def toggle_client(request, pk, client_pk):
+
+def toggle_client(request, pk, buyer_pk):
     if MailingClient.objects.filter(
-            buyer_id=client_pk,
+            buyer_id=buyer_pk,
             settings_id=pk
     ).exists():
         MailingClient.objects.filter(
-            buyer_id=client_pk,
+            buyer_id=buyer_pk,
             settings_id=pk
         ).delete()
     else:
         MailingClient.objects.create(
-            buyer_id=client_pk,
+            buyer_id=buyer_pk,
             settings_id=pk
         )
-    return redirect(reverse('mailing_app:buyers', args=[pk]))
+    return redirect(reverse('mailing_app:mailing_buyer', args=[pk]))

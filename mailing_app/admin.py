@@ -21,8 +21,7 @@ class MailingMessageAdmin(admin.ModelAdmin):
 
 @admin.register(MailingSettings)
 class MailingSettingsAdmin(admin.ModelAdmin):
-    list_display = ('time', 'period', 'status', 'message')
-    list_filter = ('time',)
+    list_display = ('start_time', 'end_time', 'period', 'status', 'message')
 
 
 @admin.register(MailingLog)
