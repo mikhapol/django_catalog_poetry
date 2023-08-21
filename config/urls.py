@@ -21,9 +21,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('catalog_app.urls')),
-    path('blog_app/', include('blog_app.urls', namespace='blog_app')),
-    path('mailing_app/', include('mailing_app.urls', namespace='mailing_app')),
-    path('order_app/', include('order_app.urls', namespace='order_app')),
-    path('users_app/', include('users_app.urls', namespace='users_app')),
+    path('', include('app_catalog.urls')),
+    path('app_blog/', include('app_blog.urls', namespace='app_blog')),
+    path('app_mailing/', include('app_mailing.urls', namespace='app_mailing')),
+    path('app_order/', include('app_order.urls', namespace='app_order')),
+    path('app_users/', include('app_users.urls', namespace='app_users')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,51 @@
+{% extends "app_catalog/base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-6">
+        <div class="col-12 mb-5">
+            <p align="center"> Клиенты рассылки</p>
+        </div>
+        {% for object in object_list %}
+        <div class="card">
+            <div class="card-header">
+                {{ object.buyer.first_name }}
+                {{ object.buyer.last_name }}
+            </div>
+            <div class="card-body">
+                {{ object.buyer.email}}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'app_mailing:mailing_buyer_toggle' mailing_pk object.buyer.pk %}"
+                       class="btn btn-outline-secondary">Удалить</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div class="col-6">
+        <div class="col-12 mb-5">
+            <p align="center"> Клиенты для добавления </p>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Добавить</th>
+            </tr>
+            {% for buyer in buyers %}
+            <tr>
+                <td>{{ buyer.last_name }}</td>
+                <td>{{ buyer.first_name }}</td>
+                <td>{{ buyer.email }}</td>
+                <td><a href="{% url 'app_mailing:mailing_buyer_toggle' mailing_pk buyer.pk %}"
+                       class="btn btn-outline-secondary">Добавить</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}
