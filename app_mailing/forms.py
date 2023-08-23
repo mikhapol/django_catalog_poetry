@@ -10,8 +10,8 @@ class MailingSettingsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['start_time'].widget.attrs['title'] = 'YYYY-MM-DD'
-        self.fields['end_time'].widget.attrs['title'] = 'YYYY-MM-DD'
+        self.fields['start_time'].widget.attrs['placeholder'] = 'YYYY-MM-DD'
+        self.fields['end_time'].widget.attrs['placeholder'] = 'YYYY-MM-DD'
 
 
 class BuyerForm(forms.ModelForm):

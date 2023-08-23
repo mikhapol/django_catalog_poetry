@@ -100,7 +100,7 @@ def generate_old_password(request):
 
 
 def generate_new_password(user: User):
-    """Создание нового пароля для пользователя который забыл пароль"""
+    """Установка нового пароля пользователю"""
     new_password = User.objects.make_random_password(length=12)
     user.set_password(str(new_password))
     user.save()
@@ -108,6 +108,7 @@ def generate_new_password(user: User):
 
 
 def forget_password_view(request):
+    """Функция проверки существующего пользователя который забыл пароль"""
     if request.method == 'POST':
         recover_form = RecoverPasswordForm(request.POST)
         if recover_form.is_valid():
@@ -141,7 +142,7 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = reverse_lazy('app_users:password_reset_complete')
 
     def form_valid(self, form):
-        # Метод, который отрабатывает при успешной валидации формы
+        """Метод, который отрабатывает при успешной валидации формы"""
         if form.is_valid():
             self.object = form.save()
             send_mail(
