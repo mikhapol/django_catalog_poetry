@@ -1,0 +1,28 @@
+{% extends 'app_catalog/base.html' %}
+
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ title }}</h1>
+</div>
+<div class="container">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-header">Создание заявки на продукт: {{ product }}</div>
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="product" value="{{ product.pk }}">
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-success">Оставить заявку</button>
+                                <a href="{% url 'app_catalog:index' %}" class="btn btn-outline-secondary">Назад</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}

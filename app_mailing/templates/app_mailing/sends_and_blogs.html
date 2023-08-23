@@ -1,0 +1,53 @@
+{% extends 'app_catalog/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="col-12">
+    <div class="card mb-5">
+        <div class="card-header bg-dark text-white">
+            <h1>Cервис рассылок</h1>
+        </div>
+        <div class="card-body">
+            <p>Всего рассылок : {{ count_mailing }}</p>
+            <p>Активных рассылок всего : {{ count_mailing_active }}</p>
+            <p>Количество уникальных клиентов для рассылок : {{ count_unique_buyer }}</p>
+        </div>
+    </div>
+</div>
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ title }}</h1>
+    <dev class="col-12 mb-5">
+        <a class="btn btn-outline-primary" href="{% url 'app_blog:create' %}">Добавить блог</a>
+    </dev>
+</div>
+<div class="container">
+    <div class="row text-center">
+        {% for object in mailing_blog %}
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <p class="card-text">
+                        {{ object|title }}
+                    </p>
+                    {% if object.image %}
+                    <div class="col-6">
+                        <img src="/media/{{ object.image }}" style="height: 300px"/></img>
+                    </div>
+                {% endif %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="{% url 'app_blog:view' object.pk %}"
+                               class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                            <a href="{% url 'app_blog:edit' object.pk %}" type="button"
+                               class="btn btn-sm btn-outline-secondary">Редактирование</a>
+                            <a href="{% url 'app_blog:delete' object.pk %}" type="button"
+                               class="btn btn-sm btn-outline-danger">Удаление</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endblock %}
