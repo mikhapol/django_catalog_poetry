@@ -1,0 +1,53 @@
+{% extends 'app_catalog/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <a href="{% url 'app_mailing:mailing_create' %}" class="btn btn-primary float-end">
+            Создать рассылку
+        </a>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            {% for item in object_list %}
+            <div class="col-4">I
+                <div class="card">
+                    <div class="card-header">Рассылка #{{ item.pk }}</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <td>Время начало</td>
+                                <td>{{ item.start_time|date:"d-m-Y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Время окончания</td>
+                                <td>{{ item.end_time|date:"d-m-Y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Период</td>
+                                <td>{{ item.get_period_display }}</td>
+                            </tr>
+                            <tr>
+                                <td>Статус</td>
+                                <td>{{ item.get_status_display }}</td>
+                            </tr>
+                            <tr>
+                                <td>Сообщение</td>
+                                <td>{{ item.message }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'app_mailing:mailing_update' item.pk %}" class="btn btn-primary float-end">Редактирование</a>
+                        <a href="{% url 'app_mailing:mailing_buyer' item.pk %}" class="btn btn-primary float-end">Клиенты
+                            рассылки</a>
+                        <a href="{% url 'app_mailing:mailing_delete' item.pk %}" class="btn btn-primary float-end">Удаление</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

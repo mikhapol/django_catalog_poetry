@@ -50,11 +50,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'catalog_app.apps.CatalogAppConfig',
-    'blog_app.apps.BlogAppConfig',
-    'mailing_app.apps.MailingAppConfig',
-    'order_app.apps.OrderAppConfig',
-    'users_app.apps.UsersAppConfig',
+    'app_catalog.apps.AppCatalogConfig',
+    'app_blog.apps.AppBlogConfig',
+    'app_mailing.apps.AppMailingConfig',
+    'app_order.apps.AppOrderConfig',
+    'app_users.apps.AppUsersConfig',
+
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -94,8 +96,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_catalog',
+        'ENGINE': get_env_value('POSTGRES_ENGINE'),
+        'NAME': get_env_value('POSTGRES_NAME'),
         'HOST': get_env_value('POSTGRES_HOST'),
         'USER': get_env_value('POSTGRES_USER'),
         'PASSWORD': get_env_value('POSTGRES_PASSWORD'),
@@ -156,10 +158,14 @@ EMAIL_HOST_PASSWORD = get_env_value('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = get_env_value('EMAIL_USE_SSL')
 # EMAIL_USE_TLS = get_env_value('EMAIL_USE_TLS')
 
-AUTH_USER_MODEL = 'users_app.User'
+CRONJOBS = [
+    ('*/2 * * * *', 'app_mailing.services.send_mails')
+]
+
+AUTH_USER_MODEL = 'app_users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = 'users_app:login'
+LOGIN_URL = 'app_users:login'
 
 CACHE_ENABLED = get_env_value('CACHE_ENABLED') == 'True'
 
