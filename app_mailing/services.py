@@ -1,4 +1,5 @@
 import datetime
+from smtplib import SMTPException
 
 from django.conf import settings
 from django.core.mail import send_mail
@@ -7,27 +8,30 @@ from app_mailing.models import MailingSettings, MailingLog
 
 
 def send_email(message_settings, message_buyer):
-    result = send_mail(
-        subject=message_settings.message.letter_subject,
-        message=message_settings.message.letter_body,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[message_buyer.buyer.email],
-        fail_silently=False,
-    )
+    """Отправка письма на почту с записью результата в журнал"""
+    result_txt = 'OK'
+    try:
+        result = send_mail(
+            subject=message_settings.message.letter_subject,
+            message=message_settings.message.letter_body,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[message_buyer.buyer.email],
+            fail_silently=False,
+        )
+
+    except SMTPException as e:
+        result_txt = e
 
     MailingLog.objects.create(
         status=MailingLog.STATUS_OK if result else MailingLog.STATUS_FAILED,
+        answer=result_txt,
         settings=message_settings,
         buyer_id=message_buyer.buyer_id
     )
 
 
-# def send_mails():
-#     for m_s in MailingSettings.objects.filter(status=MailingSettings.STATUS_STARTED):
-#         for m_c in m_s.mailingclient_set.all():
-#             send_email(m_s, m_c)
-
 def send_mails():
+    """Производит проверку необходимости отправки письма"""
     datetime_now = datetime.datetime.now(datetime.timezone.utc)
     for mailing_setting in MailingSettings.objects.filter(status=MailingSettings.STATUS_STARTED):
 

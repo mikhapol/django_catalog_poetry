@@ -1,5 +1,7 @@
 from django.db import models
 
+from app_catalog.models.products import NULLABLE
+
 
 class MailingLog(models.Model):
     STATUS_OK = 'ok'
@@ -13,6 +15,7 @@ class MailingLog(models.Model):
     buyer = models.ForeignKey('Buyer', on_delete=models.CASCADE, verbose_name='покупатель')
     settings = models.ForeignKey('MailingSettings', on_delete=models.CASCADE, verbose_name='настройки')
     status = models.CharField(choices=STATUSES, default=STATUS_OK, verbose_name='статус')
+    answer = models.CharField(max_length=100, verbose_name='ответ сервера', **NULLABLE)
 
     def __str__(self):
         return f"{self.last_attempt}"

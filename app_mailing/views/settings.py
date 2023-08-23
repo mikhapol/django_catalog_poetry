@@ -10,6 +10,12 @@ from app_mailing.models import MailingSettings
 class MailingListView(ListView):
     model = MailingSettings
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('app_mailing.view_mailingsettings'):
+            return queryset
+        return queryset.filter(owner=self.request.user)
+
 
 class MailingSettingsCreateView(CreateView):
     model = MailingSettings

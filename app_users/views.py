@@ -27,6 +27,7 @@ class LogoutView(BaseLogoutView):
 
 
 class RegisterView(CreateView):
+    """Регистрация пользователя через токен"""
     model = User
     form_class = UserRegisterForm
 
@@ -52,7 +53,7 @@ class RegisterView(CreateView):
 
 
 class ActivateView(View):
-
+    """Активация (верификация) пользователя через токен"""
     def get_user_from_email_verification_token(self, uid, token: str):
         try:
             uid = force_str(urlsafe_base64_decode(uid))
@@ -78,7 +79,7 @@ class ActivateView(View):
 class ProfileUpdateView(UpdateView):
     model = User
     form_class = UserProfileForm
-    success_url = reverse_lazy('app_users:profile')
+    success_url = reverse_lazy('app_catalog:index')
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -89,16 +90,9 @@ def recover_password_view(request):
 
 
 def generate_old_password(request):
+    """Создание нового пароля для существующего пользователя"""
     # new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)]) # Только цифры
     new_password = User.objects.make_random_password(length=12)
-    # send_mail(
-    #     subject='Восстановление пароля методом рандом.',
-    #     message=(f'Пользователь - {request.user.email}.\n'
-    #              f'Ваш новый пароль: > {new_password} <'),
-    #     from_email=settings.EMAIL_HOST_USER,
-    #     recipient_list=[request.user.email]
-    # )
-
     request.user.set_password(new_password)
     request.user.save()
     send_generate_old_password(request.user.email, new_password)
@@ -106,6 +100,7 @@ def generate_old_password(request):
 
 
 def generate_new_password(user: User):
+    """Создание нового пароля для пользователя который забыл пароль"""
     new_password = User.objects.make_random_password(length=12)
     user.set_password(str(new_password))
     user.save()

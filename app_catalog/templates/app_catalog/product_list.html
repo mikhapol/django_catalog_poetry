@@ -9,7 +9,7 @@
     <h1 class="display-4">{{ title }}</h1>
     <dev class="col-12 mb-5">
         {% if perms.catalog_app.add_product %}
-            <a class="btn btn-outline-primary" href="{% url 'app_catalog:create_product' %}">Добавить продукт</a>
+        <a class="btn btn-outline-primary" href="{% url 'app_catalog:create_product' %}">Добавить продукт</a>
         {% endif %}
     </dev>
 </div>
@@ -35,8 +35,8 @@
                             <a href="{% url 'app_catalog:view_product' object.pk %}"
                                class="btn btn-sm btn-outline-secondary">Прос.</a>
                             {% if perms.catalog_app.change_product %}
-                                <a href="{% url 'app_catalog:update_product' object.pk %}" type="button"
-                                   class="btn btn-sm btn-outline-secondary">Ред.</a>
+                            <a href="{% url 'app_catalog:update_product' object.pk %}" type="button"
+                               class="btn btn-sm btn-outline-secondary">Ред.</a>
                             {% endif %}
                             {% if user.is_superuser %}
                             <a href="{% url 'app_catalog:delete_product' object.pk %}" type="button"
@@ -46,32 +46,33 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="card-footer">
+                            {% if object.vendor %}
                             Поставщик: {{ object.vendor }}
-                            <div class="btn-group">
-                                {% if perms.catalog_app.add_provider %}
-                                    <a href="{% url 'app_catalog:create_provider' object.pk %}" type="button"
-                                       class="btn btn-sm btn-outline-secondary">Доб.</a>
-                                {% endif %}
-                                {% if perms.catalog_app.change_provider %}
-                                    <a href="{% url 'app_catalog:update_provider' object.pk %}" type="button"
-                                       class="btn btn-sm btn-outline-secondary">Изм.</a>
-                                {% endif %}
-                            </div>
+                            {% endif %}
+                            <!--                            <div class="btn-group">-->
+                            <!--                                {% if perms.catalog_app.add_provider %}-->
+                            <!--                                    <a href="{% url 'app_catalog:create_provider' object.pk %}" type="button"-->
+                            <!--                                       class="btn btn-sm btn-outline-secondary">Доб.</a>-->
+                            <!--                                {% endif %}-->
+                            <!--                                {% if perms.catalog_app.change_provider %}-->
+                            <!--                                    <a href="{% url 'app_catalog:update_provider' object.pk %}" type="button"-->
+                            <!--                                       class="btn btn-sm btn-outline-secondary">Изм.</a>-->
+                            <!--                                {% endif %}-->
+                            <!--                            </div>-->
                         </div>
-
                     </div>
                     <div class="card-footer">
-{#                        {% if perms.order_app.add_order %}#}
+                        {% if perms.order_app.add_order %}
                         <a href="{% url 'app_order:order_create' object.pk %}" class="btn btn-outline-success">Оставить
                             заявку</a>
-{#                        {% endif %}#}
+                        {% endif %}
                         {% for version_item in object.version_set.all %}
-                            {% if version_item.is_actual %}
-                                <div class="card-footer">
-                                    <p>Версия: {{ version_item.version_name }}.<br>
-                                        Номер: {{ version_item.version_number }}.</p>
-                                </div>
-                            {% endif %}
+                        {% if version_item.is_actual %}
+                        <div class="card-footer">
+                            <p>Версия: {{ version_item.version_name }}.<br>
+                                Номер: {{ version_item.version_number }}.</p>
+                        </div>
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -79,4 +80,4 @@
         </div>
         {% endfor %}
     </div>
-{% endblock content %}
+    {% endblock content %}

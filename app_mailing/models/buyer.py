@@ -17,3 +17,4 @@ class Buyer(models.Model):
     class Meta:
         verbose_name = 'Покупатель'
         verbose_name_plural = 'Покупатели'
+

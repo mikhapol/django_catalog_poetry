@@ -96,8 +96,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_catalog',
+        'ENGINE': get_env_value('POSTGRES_ENGINE'),
+        'NAME': get_env_value('POSTGRES_NAME'),
         'HOST': get_env_value('POSTGRES_HOST'),
         'USER': get_env_value('POSTGRES_USER'),
         'PASSWORD': get_env_value('POSTGRES_PASSWORD'),

@@ -9,21 +9,23 @@
 
     <nav class="ms-5">
         <a class="p-2 btn btn-success" href="{% url 'app_catalog:index' %}">Главная</a>
-<!--        <a class="p-2 btn btn-outline-primary" href="{% url 'app_catalog:categories' %}">Категории</a>-->
-<!--        <a class="p-2 btn btn-warning" href="{% url 'app_blog:list' %}">Блоги</a>-->
-<!--        <a class="p-2 btn btn-info" href="{% url 'app_catalog:contacts' %}">Контакты</a>-->
-<!--        <a class="p-2 btn btn-outline-warning" href="{% url 'app_mailing:mailing_list' %}">Рассылки</a>-->
-<!--        <a class="p-2 btn btn-outline-warning" href="{% url 'app_mailing:buyers' %}">Покупатели</a>-->
-<!--        <a class="p-2 btn btn-outline-warning" href="{% url 'app_mailing:messages' %}">Сообщения</a>-->
+        <a class="p-2 btn btn-outline-success" href="{% url 'app_mailing:sends_and_blogs' %}">Рассылки и блоги</a>
+        <!--        <a class="p-2 btn btn-outline-primary" href="{% url 'app_catalog:categories' %}">Категории</a>-->
+        <!--        <a class="p-2 btn btn-warning" href="{% url 'app_blog:list' %}">Блоги</a>-->
+        <!--        <a class="p-2 btn btn-info" href="{% url 'app_catalog:contacts' %}">Контакты</a>-->
+        <!--        <a class="p-2 btn btn-outline-warning" href="{% url 'app_mailing:mailing_list' %}">Рассылки</a>-->
+        <!--        <a class="p-2 btn btn-outline-warning" href="{% url 'app_mailing:buyers' %}">Покупатели</a>-->
+        <!--        <a class="p-2 btn btn-outline-warning" href="{% url 'app_mailing:messages' %}">Сообщения</a>-->
 
         {% if user.is_authenticated %}
-            <a class="p-2 btn btn-outline-danger" href="{% url 'app_users:profile' %}">Профиль</a>
-            <a class="p-2 btn btn-danger" href="{% url 'app_users:logout' %}">Выйти</a>
+        <a class="p-2 btn btn-outline-danger" href="{% url 'app_users:profile' %}">Профиль</a>
+        <a class="p-2 btn btn-danger" href="{% url 'app_users:logout' %}">Выйти</a>
         {% else %}
-            <a class="p-2 btn btn-outline-info" href="{% url 'app_users:register' %}">Регистрация</a>
-            <a class="p-2 btn btn-info" href="{% url 'app_users:login' %}">Войти</a>
+        <a class="p-2 btn btn-outline-info" href="{% url 'app_users:register' %}">Регистрация</a>
+        <a class="p-2 btn btn-info" href="{% url 'app_users:login' %}">Войти</a>
         {% endif %}
+        {% if user.is_superuser %}
         <a class="p-2 btn btn-link" href="/admin/">Администрирование</a>
-
+        {% endif %}
     </nav>
 </div>

@@ -26,3 +26,7 @@ class OrderCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         obj = form.save()
         send_order_email(obj)
         return super().form_valid(form)
+
+    extra_context = {
+        'title': 'Создание заявки на продукт.'
+    }

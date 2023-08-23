@@ -19,7 +19,7 @@ class Product(models.Model):
     vendor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='поставщик', **NULLABLE)
 
     def __str__(self):
-        return f'Наименование - {self.name}, описание: {self.desc}, категория: {self.category}, цена - {self.price}.'
+        return f'{self.name} ({self.category}), цена - {self.price}.'
 
     class Meta:
         verbose_name = 'Продукт'
