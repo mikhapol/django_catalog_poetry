@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from app_catalog.models.products import NULLABLE
@@ -29,6 +30,8 @@ class MailingSettings(models.Model):
     status = models.CharField(max_length=20, choices=STATUSES, default=STATUS_CREATED, verbose_name='Статус')
 
     message = models.ForeignKey('MailingMessage', on_delete=models.CASCADE, verbose_name='Сообщение')
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
 
     def __str__(self):
         return f"{self.start_time} / {self.period}"
